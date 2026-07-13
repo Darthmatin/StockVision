@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 
 import Navbar from "./components/Navbar";
@@ -21,33 +21,41 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const fetchStock = async () => {
-    try {
-      setLoading(true);
-      setError("");
+ const fetchStock = async (symbol = ticker) => {
+  try {
+    setLoading(true);
+    setError("");
 
-      const [stockRes, historyRes, companyRes] = await Promise.all([
-        api.get(`/stock/${ticker}`),
-        api.get(`/history/${ticker}?period=${period}`),
-        api.get(`/company/${ticker}`),
-      ]);
+    const stockRes = await api.get(`/stock/${symbol}`);
+    setStock(stockRes.data);
 
-      setStock(stockRes.data);
-      setHistory(historyRes.data);
-      setCompany(companyRes.data);
-    } catch (err) {
-      console.error(err);
-      setError("Unable to fetch stock data.");
-      setStock(null);
-      setHistory([]);
-      setCompany(null);
-    } finally {
-      setLoading(false);
-    }
-  };
+    const historyRes = await api.get(
+      `/history/${symbol}?period=${period}`
+    );
+    setHistory(historyRes.data);
 
+    const companyRes = await api.get(`/company/${symbol}`);
+    setCompany(companyRes.data);
+
+  } catch (err) {
+    console.error(err);
+
+    setError(
+      err.response?.data?.detail ||
+      err.message ||
+      "Unable to fetch stock data."
+    );
+
+    setStock(null);
+    setHistory([]);
+    setCompany(null);
+
+  } finally {
+    setLoading(false);
+  }
+};
   useEffect(() => {
-    fetchStock();
+    fetchStock(ticker);
   }, [period]);
 
   return (
@@ -58,14 +66,18 @@ function App() {
         <SearchBar
           ticker={ticker}
           setTicker={setTicker}
-          onSearch={fetchStock}
+          onSearch={() => fetchStock(ticker)}
         />
 
         {loading && <h2>Loading...</h2>}
 
-        {error && <h2>{error}</h2>}
+        {error && (
+          <h2 style={{ color: "red", marginTop: "20px" }}>
+            {error}
+          </h2>
+        )}
 
-        {stock && (
+        {!loading && stock && (
           <>
             <div className="dashboard">
               <div className="left-panel">
@@ -81,7 +93,7 @@ function App() {
               </div>
             </div>
 
-            <CompanyInfo company={company} />
+            {company && <CompanyInfo company={company} />}
           </>
         )}
       </div>

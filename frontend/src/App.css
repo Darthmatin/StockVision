@@ -32,10 +32,15 @@ gap:30px;
 
 .nav-links span{
 cursor:pointer;
+transition:.2s;
+}
+
+.nav-links span:hover{
+color:#3b82f6;
 }
 
 .container{
-max-width:1400px;
+max-width:1450px;
 margin:auto;
 padding:30px;
 }
@@ -48,34 +53,46 @@ margin-bottom:35px;
 }
 
 .search-container input{
-width:350px;
+width:380px;
 padding:15px;
 border:none;
 border-radius:10px;
 font-size:18px;
+outline:none;
 }
 
 .search-container button{
-padding:15px 25px;
+padding:15px 28px;
 border:none;
 border-radius:10px;
 background:#2563eb;
 color:white;
 font-size:18px;
 cursor:pointer;
+transition:.2s;
+}
+
+.search-container button:hover{
+background:#1d4ed8;
 }
 
 .dashboard{
 display:grid;
-grid-template-columns:350px 1fr;
+grid-template-columns:340px 1fr;
 gap:25px;
 align-items:start;
 }
 
-.stock-card{
+.stock-card,
+.chart-card,
+.company-card{
 background:#1e293b;
+border-radius:16px;
+box-shadow:0 8px 25px rgba(0,0,0,.25);
+}
+
+.stock-card{
 padding:25px;
-border-radius:15px;
 text-align:center;
 }
 
@@ -95,25 +112,70 @@ border-radius:10px;
 .stock-grid h4{
 color:#93c5fd;
 margin-bottom:10px;
+font-size:15px;
 }
 
 .stock-grid p{
-font-size:28px;
+font-size:24px;
 font-weight:bold;
 }
 
 .chart-card{
-background:#1e293b;
 padding:25px;
-border-radius:15px;
-height:100%;
+}
+
+.chart-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.period-buttons{
+display:flex;
+gap:10px;
+}
+
+.period-buttons button{
+padding:8px 14px;
+border:none;
+border-radius:8px;
+background:#334155;
+color:white;
+cursor:pointer;
+transition:.25s;
+}
+
+.period-buttons button:hover{
+background:#2563eb;
+}
+
+.period-buttons .active{
+background:#2563eb;
+}
+
+.custom-tooltip{
+background:#111827;
+border:1px solid #334155;
+padding:15px;
+border-radius:10px;
+color:white;
+box-shadow:0 5px 20px rgba(0,0,0,.4);
+}
+
+.custom-tooltip h4{
+margin-bottom:10px;
+color:#60a5fa;
+}
+
+.custom-tooltip p{
+margin:4px 0;
+font-size:14px;
 }
 
 .company-card{
 margin-top:30px;
-background:#1e293b;
 padding:25px;
-border-radius:15px;
 }
 
 .company-grid{
@@ -138,35 +200,34 @@ margin-bottom:10px;
 .company-grid a{
 color:white;
 text-decoration:none;
-font-size:18px;
+word-break:break-word;
 }
+
+.company-grid a:hover{
+color:#3b82f6;
+}
+
+@media (max-width:1000px){
+
+.dashboard{
+grid-template-columns:1fr;
+}
+
+.company-grid{
+grid-template-columns:1fr;
+}
+
+.search-container{
+flex-direction:column;
+}
+
+.search-container input{
+width:100%;
+}
+
 .chart-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:20px;
+flex-direction:column;
+gap:15px;
 }
 
-.period-buttons{
-display:flex;
-gap:10px;
-}
-
-.period-buttons button{
-padding:8px 14px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-background:#334155;
-color:white;
-font-weight:bold;
-transition:.25s;
-}
-
-.period-buttons button:hover{
-background:#2563eb;
-}
-
-.period-buttons .active{
-background:#2563eb;
 }
